@@ -166,3 +166,39 @@ a.secondary {
     filter: invert();
   }
 }
+
+.container {
+  animation: gradientBG 15s ease infinite;
+  background: linear-gradient(-45deg, #000000, #1a1a1a);
+  background-size: 400% 400%;
+}
+
+@keyframes gradientBG {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Optional: Add custom scrollbar styling */
+:global(*::-webkit-scrollbar) {
+  width: 8px;
+}
+
+:global(*::-webkit-scrollbar-track) {
+  background: #1a1a1a;
+}
+
+:global(*::-webkit-scrollbar-thumb) {
+  background: linear-gradient(to bottom, #06b6d4, #a855f7);
+  border-radius: 4px;
+}
+
+:global(*::-webkit-scrollbar-thumb:hover) {
+  background: linear-gradient(to bottom, #0891b2, #9333ea);
+}
