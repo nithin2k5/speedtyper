@@ -3,7 +3,7 @@ import { useState, useEffect, useCallback } from "react";
 import { Stats } from "./Stats";
 import "../styles/TypingTest.css";
 
-const TIMER_DURATION = 30;
+const TIMER_DURATION = 60;
 
 const SAMPLE_TEXTS = [
   "The quick brown fox jumps over the lazy dog. Programming is the art of telling another human what one wants the computer to do. But it's much more than just a sequence of instructions. It's about creativity, problem-solving, and the ability to think critically, shaping ideas into tangible solutions. Whether you're writing a simple script or designing an intricate application, the fundamental skill is the same: clear and precise communication.",

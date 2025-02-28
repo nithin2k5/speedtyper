@@ -6,7 +6,7 @@ export default function Home() {
   return (
     <div className="container">
       <main className="main">
-        <h1 className="title">Speed Typing Test</h1>
+        <h1 className="title">Speed x Type</h1>
         <TypingTest />
       </main>
     </div>
