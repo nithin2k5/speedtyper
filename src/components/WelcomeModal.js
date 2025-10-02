@@ -55,51 +55,79 @@ export function WelcomeModal({ onClose }) {
   };
 
   return (
-    <div className="fixed inset-0 bg-black/80 backdrop-blur-md flex items-center justify-center p-6 z-50">
-      <div className="relative group max-w-lg w-full">
-        <div className={`absolute -inset-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-3xl blur opacity-30 animate-pulse ${theme.glow}`}></div>
+    <div className="fixed inset-0 bg-gradient-to-br from-gray-900/95 via-blue-900/90 to-purple-900/95 backdrop-blur-lg flex items-center justify-center p-4 sm:p-6 z-50 animate-fade-in">
+      {/* Animated background particles */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-gradient-to-r from-blue-500/20 to-cyan-500/20 rounded-full blur-3xl animate-pulse animation-delay-1000"></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-gradient-to-r from-emerald-500/15 to-green-500/15 rounded-full blur-3xl animate-pulse animation-delay-2000"></div>
+      </div>
 
-        <div className={`relative ${theme.cardBg} backdrop-blur-2xl ${theme.cardBorder} rounded-3xl p-8 shadow-2xl`}>
-          {/* Progress indicator */}
-          <div className="flex justify-center mb-6">
-            <div className="flex space-x-2">
-              {steps.map((_, index) => (
-                <div
-                  key={index}
-                  className={`w-3 h-3 rounded-full transition-all duration-200 ${
-                    index === currentStep
-                      ? 'bg-indigo-500 scale-125'
-                      : index < currentStep
-                      ? 'bg-green-500'
-                      : 'bg-gray-600'
-                  }`}
-                />
-              ))}
-            </div>
-          </div>
+      <div className="relative group max-w-md sm:max-w-lg w-full animate-bounce-in">
+        {/* Enhanced glow effect */}
+        <div className="absolute -inset-2 bg-gradient-to-r from-purple-500/30 via-blue-500/30 to-cyan-500/30 rounded-3xl blur-xl animate-pulse-glow"></div>
 
+        <div className="relative bg-gray-900/90 backdrop-blur-2xl border border-gray-700/50 rounded-3xl p-6 sm:p-8 shadow-2xl overflow-hidden">
+          {/* Glass overlay */}
+          <div className="absolute inset-0 bg-gradient-to-br from-white/5 via-transparent to-black/10"></div>
           {/* Content */}
-          <div className="text-center mb-8">
-            <div className="text-6xl mb-4">{steps[currentStep].icon}</div>
-            <h2 className={`text-2xl font-bold ${theme.text} mb-4`}>
+          <div className="relative text-center mb-8">
+            {/* Floating elements */}
+            <div className="absolute -top-4 -left-4 text-2xl animate-bounce animation-delay-1000">✨</div>
+            <div className="absolute -top-2 -right-4 text-xl animate-bounce animation-delay-2000">⭐</div>
+
+            <div className="text-5xl sm:text-6xl mb-6 animate-scale-in">{steps[currentStep].icon}</div>
+
+            {/* Progress indicator */}
+            <div className="flex justify-center mb-6">
+              <div className="flex space-x-2">
+                {steps.map((_, index) => (
+                  <div
+                    key={index}
+                    className={`w-2 h-2 sm:w-3 sm:h-3 rounded-full transition-all duration-300 ${
+                      index === currentStep
+                        ? 'bg-gradient-to-r from-purple-500 to-blue-500 scale-125 animate-pulse'
+                        : index < currentStep
+                        ? 'bg-gradient-to-r from-green-500 to-emerald-500'
+                        : 'bg-gray-600'
+                    }`}
+                  />
+                ))}
+              </div>
+            </div>
+
+            <h2 className="text-xl sm:text-2xl font-bold text-white mb-4 animate-fade-in">
               {steps[currentStep].title}
             </h2>
-            <p className={`${theme.textSecondary} leading-relaxed`}>
+            <p className="text-gray-300 leading-relaxed text-sm sm:text-base animate-fade-in" style={{ animationDelay: '0.2s' }}>
               {steps[currentStep].content}
             </p>
           </div>
 
           {/* Don't show again checkbox (only on first step) */}
           {currentStep === 0 && (
-            <div className="flex items-center justify-center mb-6">
-              <label className="flex items-center space-x-3 cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={dontShowAgain}
-                  onChange={(e) => setDontShowAgain(e.target.checked)}
-                  className="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500"
-                />
-                <span className={`text-sm ${theme.textSecondary}`}>
+            <div className="flex items-center justify-center mb-6 animate-fade-in" style={{ animationDelay: '0.4s' }}>
+              <label className="flex items-center space-x-3 cursor-pointer group">
+                <div className="relative">
+                  <input
+                    type="checkbox"
+                    checked={dontShowAgain}
+                    onChange={(e) => setDontShowAgain(e.target.checked)}
+                    className="sr-only"
+                  />
+                  <div className={`w-5 h-5 rounded-lg border-2 transition-all duration-200 flex items-center justify-center ${
+                    dontShowAgain
+                      ? 'bg-gradient-to-r from-purple-500 to-blue-500 border-purple-500'
+                      : 'bg-gray-800 border-gray-600 group-hover:border-purple-400'
+                  }`}>
+                    {dontShowAgain && (
+                      <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                      </svg>
+                    )}
+                  </div>
+                </div>
+                <span className="text-sm text-gray-300 group-hover:text-white transition-colors duration-200">
                   Don't show this tutorial again
                 </span>
               </label>
@@ -107,36 +135,47 @@ export function WelcomeModal({ onClose }) {
           )}
 
           {/* Navigation buttons */}
-          <div className="flex justify-between items-center">
+          <div className="flex justify-between items-center animate-fade-in" style={{ animationDelay: '0.6s' }}>
             <button
               onClick={prevStep}
               disabled={currentStep === 0}
-              className={`px-6 py-3 rounded-xl font-medium transition-all duration-200 ${
+              className={`px-4 sm:px-6 py-3 rounded-xl font-medium transition-all duration-200 transform hover:scale-105 ${
                 currentStep === 0
-                  ? 'bg-gray-700 text-gray-500 cursor-not-allowed'
-                  : `bg-gray-700 hover:bg-gray-600 ${theme.text} hover:scale-105`
+                  ? 'bg-gray-800/60 text-gray-500 cursor-not-allowed border border-gray-700/50'
+                  : 'bg-gray-800/80 hover:bg-gray-700/80 text-gray-300 hover:text-white border border-gray-600/50 hover:border-gray-500/50 shadow-lg hover:shadow-xl'
               }`}
             >
+              <svg className="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              </svg>
               Previous
             </button>
 
-            <div className="text-sm text-gray-500">
-              {currentStep + 1} of {steps.length}
+            <div className="flex items-center space-x-2">
+              <div className="text-sm text-gray-500 font-medium">
+                {currentStep + 1} of {steps.length}
+              </div>
             </div>
 
             {currentStep === steps.length - 1 ? (
               <button
                 onClick={handleClose}
-                className="px-6 py-3 bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 hover:from-indigo-500 hover:via-purple-500 hover:to-pink-500 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200"
+                className="px-4 sm:px-6 py-3 bg-gradient-to-r from-emerald-500 via-green-500 to-teal-500 hover:from-emerald-400 hover:via-green-400 hover:to-teal-400 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200 animate-pulse-glow"
               >
                 Get Started!
+                <svg className="w-4 h-4 inline ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                </svg>
               </button>
             ) : (
               <button
                 onClick={nextStep}
-                className="px-6 py-3 bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 hover:from-indigo-500 hover:via-purple-500 hover:to-pink-500 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200"
+                className="px-4 sm:px-6 py-3 bg-gradient-to-r from-purple-500 via-blue-500 to-cyan-500 hover:from-purple-400 hover:via-blue-400 hover:to-cyan-400 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200"
               >
                 Next
+                <svg className="w-4 h-4 inline ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
               </button>
             )}
           </div>

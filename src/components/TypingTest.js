@@ -8,24 +8,21 @@ import { useTheme } from "./ThemeProvider";
 
 const TIMER_DURATION = 60;
 
-// Difficulty levels with different text complexities
+// Beginner-friendly text collections - much simpler and shorter
 const TEXT_COLLECTIONS = {
   beginner: [
-    "The cat sat on the mat next to the dog who was sleeping peacefully. Birds flew high in the bright blue sky while fish swam happily in the clear water below. Children played games in the park and everyone enjoyed the beautiful sunny day together.",
-    "I like to eat fresh red apples from the orchard. She likes to eat sweet juicy pears that grow on tall trees. He likes to eat purple grapes that come in big bunches. We like to eat different kinds of fruit every day to stay healthy and strong.",
-    "The sun shines brightly during the day and gives us warmth. The moon comes out at night and shines with a soft cool light. The stars twinkle beautifully in the dark sky above our heads. The sky changes colors from blue to orange to purple every day.",
-    "Red is my favorite color because it reminds me of ripe apples. Blue is nice too because it makes me think of the ocean waves. Green makes me happy because it reminds me of fresh grass. Yellow is fun because it looks like the bright sunshine.",
-    "I can run fast across the playground with my friends. She can jump high over the rope during gym class. He can swim well underwater for a long time. We can play many different games together and have fun.",
-    "The house is big with many rooms and a beautiful garden. The car is red and drives quickly on the smooth roads. The tree is tall and provides shade on hot summer days. The flower is pretty with colorful petals that bloom in spring.",
-    "I have a pen that writes in smooth blue ink. She has a book with many interesting stories inside. He has a ball that bounces high when thrown hard. We have many toys that we play with every day.",
-    "One two three four five six seven eight nine ten. Eleven twelve thirteen fourteen fifteen sixteen. Seventeen eighteen nineteen twenty twenty one. Twenty two twenty three twenty four twenty five.",
-    "A B C D E F G H I J K L M N O P. Q R S T U V W X Y Z and the numbers. One two three four five six seven eight nine. Zero is also a number we use every day.",
-    "My name is Sam and I like to play with my friends. Her name is Pam and she enjoys reading books. His name is Tom and he likes to play sports. Our names are fun and we all get along well together.",
-    "I like hot dogs with mustard and ketchup on them. She likes ice cream with chocolate chips inside. He likes pizza with extra cheese and pepperoni. We like different kinds of food but we all eat together.",
-    "The clock is on the wall and tells us what time it is. The chair is by the door and we sit on it when tired. The lamp is on the desk and gives us light to read. The room is comfortable with everything we need.",
-    "I can see the sun shining brightly through the window. She can see the moon rising slowly in the evening. He can see the stars sparkling in the night sky. We can see many beautiful things in nature every day.",
-    "Big and small objects are all around us everywhere. Tall and short people walk on the busy streets. Fast and slow cars drive on the highway together. Happy and sad feelings change throughout the day.",
-    "Up and down the stairs we go every day. Left and right we turn when walking down the street. In and out of the house we come and go. Here and there we find interesting things to do."
+    "The cat sat on the mat. The dog ran in the park. Birds fly in the sky. Fish swim in the sea.",
+    "I like to eat apples. She likes to eat pears. He likes to eat grapes. We like to eat fruit.",
+    "The sun is hot. The moon is cool. The stars are bright. The sky is blue.",
+    "Red is my favorite color. Blue is nice too. Green makes me happy. Yellow is fun.",
+    "I can run fast. She can jump high. He can swim well. We can play games.",
+    "The house is big. The car is red. The tree is tall. The flower is pretty.",
+    "I have a pen. She has a book. He has a ball. We have toys.",
+    "One two three four. Five six seven eight. Nine ten eleven twelve.",
+    "A B C D E F G. H I J K L M N O P. Q R S T U V W X Y Z.",
+    "My name is Sam. Her name is Pam. His name is Tom. Our names are fun.",
+    "I like hot dogs. She likes ice cream. He likes pizza. We like food.",
+    "The clock is on the wall. The chair is by the door. The lamp is on the desk."
   ],
   intermediate: [
     "The computer helps us work faster and more efficiently every day. The phone lets us talk to people anywhere in the world instantly. The internet connects everyone together and shares information globally. Technology makes life easier and opens up new possibilities for everyone.",
@@ -63,6 +60,7 @@ export function TypingTest() {
 
   const [difficulty, setDifficulty] = useState('beginner');
   const [mode, setMode] = useState('timed'); // 'timed' or 'practice'
+  const [isBeginnerMode, setIsBeginnerMode] = useState(true); // Start in beginner mode
   const [text, setText] = useState("");
   const [timer, setTimer] = useState(TIMER_DURATION);
   const [isRunning, setIsRunning] = useState(false);
@@ -346,62 +344,103 @@ export function TypingTest() {
             <div className={`absolute -inset-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-3xl blur opacity-20 group-hover:opacity-30 transition duration-500 ${theme.glow}`}></div>
 
             <div className={`relative ${theme.cardBg} backdrop-blur-2xl ${theme.cardBorder} rounded-3xl p-6 shadow-2xl`}>
-              {/* Mode and Difficulty Selector */}
-              <div className="flex flex-wrap items-center justify-between mb-4 gap-4">
-                {/* Action Buttons */}
-                <div className="flex items-center space-x-2">
-                  <button
-                    onClick={() => setShowProgress(true)}
-                    className={`px-3 py-1 ${theme.inputBg} ${theme.inputBorder} rounded-lg text-sm ${theme.text} hover:bg-gray-600 transition-colors duration-200`}
-                    title="View your progress statistics"
-                  >
-                    📊 Progress
-                  </button>
-                  <button
-                    onClick={() => setShowSettings(true)}
-                    className={`px-3 py-1 ${theme.inputBg} ${theme.inputBorder} rounded-lg text-sm ${theme.text} hover:bg-gray-600 transition-colors duration-200`}
-                    title="Customize your settings"
-                  >
-                    ⚙️ Settings
-                  </button>
-                </div>
+              {/* Beginner Mode Controls */}
+              <div className="mb-6">
+                {/* Beginner Mode Toggle */}
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center space-x-4">
+                    <label className="relative inline-flex items-center cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={isBeginnerMode}
+                        onChange={(e) => setIsBeginnerMode(e.target.checked)}
+                        className="sr-only peer"
+                      />
+                      <div className="w-11 h-6 bg-gray-600 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                      <span className="ml-3 text-sm font-medium text-blue-400">Beginner Mode</span>
+                    </label>
 
-                {/* Mode and Difficulty Selectors */}
-                <div className="flex items-center space-x-4">
-                  {/* Mode Selector */}
-                  <div className="flex items-center space-x-2">
-                    <span className={`text-sm ${theme.textSecondary} font-medium`}>Mode:</span>
-                    <select
-                      value={mode}
-                      onChange={(e) => setMode(e.target.value)}
-                      disabled={isRunning}
-                      className={`px-3 py-1 ${theme.inputBg} ${theme.inputBorder} rounded-lg text-sm ${theme.text} focus:outline-none focus:ring-2 focus:ring-indigo-400 disabled:opacity-50`}
-                    >
-                      <option value="timed">Timed (60s)</option>
-                      <option value="practice">Practice</option>
-                    </select>
+                    {/* Progress indicator */}
+                    {!isBeginnerMode && (
+                      <div className={`text-xs ${theme.textMuted} font-mono ml-4`}>
+                        {text.length}/{sampleText.length} chars
+                      </div>
+                    )}
                   </div>
 
-                  {/* Difficulty Selector */}
-                  <div className="flex items-center space-x-2">
-                    <span className={`text-sm ${theme.textSecondary} font-medium`}>Level:</span>
-                    <select
-                      value={difficulty}
-                      onChange={(e) => setDifficulty(e.target.value)}
-                      disabled={isRunning}
-                      className={`px-3 py-1 ${theme.inputBg} ${theme.inputBorder} rounded-lg text-sm ${theme.text} focus:outline-none focus:ring-2 focus:ring-indigo-400 disabled:opacity-50`}
-                    >
-                      <option value="beginner">Beginner</option>
-                      <option value="intermediate">Intermediate</option>
-                      <option value="advanced">Advanced</option>
-                    </select>
-                  </div>
+                  {/* Advanced controls - only show if not beginner mode */}
+                  {!isBeginnerMode && (
+                    <div className="flex items-center space-x-2">
+                      <button
+                        onClick={() => setShowProgress(true)}
+                        className={`px-3 py-1 ${theme.inputBg} ${theme.inputBorder} rounded-lg text-sm ${theme.text} hover:bg-gray-600 transition-colors duration-200`}
+                        title="View your progress statistics"
+                      >
+                        📊 Progress
+                      </button>
+                      <button
+                        onClick={() => setShowSettings(true)}
+                        className={`px-3 py-1 ${theme.inputBg} ${theme.inputBorder} rounded-lg text-sm ${theme.text} hover:bg-gray-600 transition-colors duration-200`}
+                        title="Customize your settings"
+                      >
+                        ⚙️ Settings
+                      </button>
+                    </div>
+                  )}
                 </div>
 
-                {/* Progress indicator */}
-                <div className={`text-xs ${theme.textMuted} font-mono`}>
-                  {text.length}/{sampleText.length} chars
-                </div>
+                {/* Beginner Mode Instructions */}
+                {isBeginnerMode && (
+                  <div className="mb-4 p-4 bg-blue-500/10 border border-blue-400/30 rounded-xl">
+                    <div className="flex items-start space-x-3">
+                      <span className="text-2xl">👋</span>
+      <div>
+                        <h4 className={`text-sm font-semibold ${theme.text} mb-1`}>Welcome to Typing Practice!</h4>
+                        <p className={`text-sm ${theme.textSecondary} leading-relaxed`}>
+                          {text.length === 0
+                            ? "Click below and start typing the text you see. Take your time and focus on accuracy!"
+                            : isRunning
+                            ? "Keep typing! Green letters are correct, red letters need fixing."
+                            : "Great job! Click 'Try Another Test' to practice more."}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Advanced Mode Selectors - only show if not beginner mode */}
+                {!isBeginnerMode && (
+                  <div className="flex items-center space-x-4 mb-4">
+                    {/* Mode Selector */}
+                    <div className="flex items-center space-x-2">
+                      <span className={`text-sm ${theme.textSecondary} font-medium`}>Mode:</span>
+                      <select
+                        value={mode}
+                        onChange={(e) => setMode(e.target.value)}
+                        disabled={isRunning}
+                        className={`px-3 py-1 ${theme.inputBg} ${theme.inputBorder} rounded-lg text-sm ${theme.text} focus:outline-none focus:ring-2 focus:ring-indigo-400 disabled:opacity-50`}
+                      >
+                        <option value="timed">Timed (60s)</option>
+                        <option value="practice">Practice</option>
+                      </select>
+                    </div>
+
+                    {/* Difficulty Selector */}
+                    <div className="flex items-center space-x-2">
+                      <span className={`text-sm ${theme.textSecondary} font-medium`}>Level:</span>
+                      <select
+                        value={difficulty}
+                        onChange={(e) => setDifficulty(e.target.value)}
+                        disabled={isRunning}
+                        className={`px-3 py-1 ${theme.inputBg} ${theme.inputBorder} rounded-lg text-sm ${theme.text} focus:outline-none focus:ring-2 focus:ring-indigo-400 disabled:opacity-50`}
+                      >
+                        <option value="beginner">Beginner</option>
+                        <option value="intermediate">Intermediate</option>
+                        <option value="advanced">Advanced</option>
+                      </select>
+                    </div>
+                  </div>
+                )}
               </div>
 
               {/* Header with status */}
@@ -421,8 +460,35 @@ export function TypingTest() {
 
               {/* Sample Text Display */}
               <div className={`mb-6 p-8 ${theme.buttonBg} rounded-2xl ${theme.cardBorder} min-h-[220px]`}>
-                {/* Keyboard Hint */}
-                {!isRunning && text.length === 0 && (
+                {/* Beginner Keyboard Hints */}
+                {isBeginnerMode && (
+                  <div className="mb-6 space-y-4">
+                    {!isRunning && text.length === 0 && (
+                      <div className="text-center">
+                        <div className="inline-flex items-center space-x-2 bg-indigo-500/20 border border-indigo-400/30 rounded-lg px-4 py-3">
+                          <span className="text-base text-indigo-300 font-medium">Start with this key:</span>
+                          <kbd className="px-4 py-3 bg-indigo-600 text-white rounded-lg text-lg font-mono font-bold shadow-lg">
+                            {sampleText[0]}
+                          </kbd>
+                        </div>
+                      </div>
+                    )}
+
+                    {isRunning && text.length < sampleText.length && (
+                      <div className="text-center">
+                        <div className="inline-flex items-center space-x-2 bg-green-500/20 border border-green-400/30 rounded-lg px-4 py-2">
+                          <span className="text-sm text-green-300 font-medium">Now type:</span>
+                          <kbd className="px-3 py-2 bg-green-600 text-white rounded text-lg font-mono font-bold">
+                            {sampleText[text.length]}
+                          </kbd>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {/* Advanced Keyboard Hint */}
+                {!isBeginnerMode && !isRunning && text.length === 0 && (
                   <div className="mb-6 text-center">
                     <div className="inline-flex items-center space-x-2 bg-indigo-500/20 border border-indigo-400/30 rounded-lg px-4 py-2">
                       <span className="text-base text-indigo-300 font-medium">Next key:</span>
@@ -540,88 +606,250 @@ export function TypingTest() {
 
       {/* Results Modal */}
       {showResults && (
-        <div className="fixed inset-0 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 z-50">
-          <div className="relative group max-w-4xl w-full">
-            <div className={`absolute -inset-1 bg-gradient-to-r from-emerald-500 via-blue-500 to-purple-500 rounded-3xl blur opacity-30 animate-pulse ${theme.glow}`}></div>
+        <div className="fixed inset-0 bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900 backdrop-blur-lg flex items-center justify-center z-50">
+          {/* Full screen background with no dark edges */}
+          <div className="absolute inset-0 bg-gradient-to-br from-indigo-900/80 via-purple-900/80 to-pink-900/80"></div>
+          
+          {/* Animated background particles */}
+          <div className="absolute inset-0 overflow-hidden">
+            <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-r from-purple-500/30 to-pink-500/30 rounded-full blur-3xl animate-pulse"></div>
+            <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-gradient-to-r from-blue-500/30 to-cyan-500/30 rounded-full blur-3xl animate-pulse animation-delay-1000"></div>
+            <div className="absolute top-3/4 left-3/4 w-96 h-96 bg-gradient-to-r from-emerald-500/20 to-green-500/20 rounded-full blur-3xl animate-pulse animation-delay-2000"></div>
+            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-gradient-to-r from-yellow-500/20 to-orange-500/20 rounded-full blur-3xl animate-pulse animation-delay-3000"></div>
+          </div>
 
-            <div className={`relative ${theme.cardBg} backdrop-blur-2xl ${theme.cardBorder} rounded-3xl p-8 shadow-2xl`}>
+          <div className="relative w-full h-full flex items-center justify-center p-4">
+            <div className="relative group max-w-6xl w-full max-h-[90vh] overflow-y-auto">
+              <div className={`relative bg-gray-900/95 backdrop-blur-2xl border border-gray-700/50 rounded-3xl shadow-2xl overflow-hidden`}>
+                {/* Beautiful gradient overlay */}
+                <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-black/20"></div>
               {/* Header */}
-              <div className="text-center mb-8">
-                <div className="w-24 h-24 bg-gradient-to-r from-emerald-500 to-green-500 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">
-                  <svg className="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
+              <div className="relative text-center py-12 px-8">
+                {/* Floating celebration elements */}
+                <div className="absolute inset-0 pointer-events-none overflow-hidden">
+                  <div className="absolute top-8 left-12 text-5xl animate-bounce animation-delay-500">🎊</div>
+                  <div className="absolute top-12 right-16 text-4xl animate-bounce animation-delay-1000">✨</div>
+                  <div className="absolute bottom-8 left-20 text-3xl animate-bounce animation-delay-1500">⭐</div>
+                  <div className="absolute bottom-12 right-12 text-4xl animate-bounce animation-delay-2000">🎉</div>
+                  <div className="absolute top-1/2 left-8 text-3xl animate-bounce animation-delay-2500">🏆</div>
+                  <div className="absolute top-1/3 right-8 text-3xl animate-bounce animation-delay-3000">💫</div>
                 </div>
 
-                <h2 className={`text-4xl font-bold ${theme.text} mb-3`}>🎉 Test Complete!</h2>
-                <div className={`text-lg ${theme.textSecondary} mb-2`}>
-                  Difficulty: <span className="font-semibold text-indigo-400 capitalize">{difficulty}</span> |
-                  Mode: <span className="font-semibold text-indigo-400">{mode === 'timed' ? '60s Timed' : 'Practice'}</span>
-                </div>
-                <p className={`${theme.textSecondary} text-xl leading-relaxed max-w-2xl mx-auto`}>
-                  {getEncouragingMessage(finalStats.wpm, finalStats.accuracy)}
-                </p>
-              </div>
-
-              {/* Main Stats Grid */}
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-                <div className="group relative">
-                  <div className="absolute -inset-0.5 bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl blur opacity-30 group-hover:opacity-60 transition duration-300"></div>
-                  <div className={`relative bg-gray-800/60 rounded-2xl p-6 ${theme.cardBorder} text-center`}>
-                    <div className="text-4xl font-bold text-purple-400 font-mono mb-2">
-                      {finalStats.wpm}
-                    </div>
-                    <div className={`text-sm ${theme.textMuted} uppercase tracking-wider font-medium`}>
-                      Words/Minute
-                    </div>
-                    {finalStats.wpm === userStats.bestWpm && finalStats.wpm > 0 && (
-                      <div className="mt-2 text-xs text-yellow-400 font-medium">🏆 Personal Best!</div>
-                    )}
-                  </div>
-                </div>
-
-                <div className="group relative">
-                  <div className="absolute -inset-0.5 bg-gradient-to-r from-emerald-500 to-green-500 rounded-2xl blur opacity-30 group-hover:opacity-60 transition duration-300"></div>
-                  <div className={`relative bg-gray-800/60 rounded-2xl p-6 ${theme.cardBorder} text-center`}>
-                    <div className="text-4xl font-bold text-emerald-400 font-mono mb-2">
-                      {finalStats.accuracy}%
-                    </div>
-                    <div className={`text-sm ${theme.textMuted} uppercase tracking-wider font-medium`}>
-                      Accuracy
-                    </div>
-                    {finalStats.accuracy === userStats.bestAccuracy && finalStats.accuracy > 0 && (
-                      <div className="mt-2 text-xs text-yellow-400 font-medium">🏆 Personal Best!</div>
-                    )}
-                  </div>
-                </div>
-
-                <div className="group relative">
-                  <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-2xl blur opacity-30 group-hover:opacity-60 transition duration-300"></div>
-                  <div className={`relative bg-gray-800/60 rounded-2xl p-6 ${theme.cardBorder} text-center`}>
-                    <div className="text-4xl font-bold text-blue-400 font-mono mb-2">
-                      {Math.round(sampleText.split(' ').length)}
-                    </div>
-                    <div className={`text-sm ${theme.textMuted} uppercase tracking-wider font-medium`}>
-                      Words Typed
+                <div className="relative">
+                  {/* Success Icon */}
+                  <div className="w-40 h-40 bg-gradient-to-br from-emerald-400 via-green-500 to-teal-500 rounded-full flex items-center justify-center mx-auto mb-10 shadow-2xl animate-pulse relative">
+                    <div className="absolute inset-0 bg-gradient-to-br from-white/30 to-white/10 rounded-full animate-ping"></div>
+                    <div className="relative w-28 h-28 bg-gradient-to-br from-white/30 to-white/10 rounded-full flex items-center justify-center">
+                      <svg className="w-16 h-16 text-white drop-shadow-lg" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
                     </div>
                   </div>
-                </div>
 
-                <div className="group relative">
-                  <div className="absolute -inset-0.5 bg-gradient-to-r from-orange-500 to-red-500 rounded-2xl blur opacity-30 group-hover:opacity-60 transition duration-300"></div>
-                  <div className={`relative bg-gray-800/60 rounded-2xl p-6 ${theme.cardBorder} text-center`}>
-                    <div className="text-4xl font-bold text-orange-400 font-mono mb-2">
-                      {mode === 'timed' ? TIMER_DURATION : Math.round((Date.now() - startTimeRef.current) / 1000)}s
+                  {/* Main Title */}
+                  <h1 className={`text-6xl md:text-7xl font-black text-white mb-6 bg-gradient-to-r from-emerald-400 via-blue-400 to-purple-400 bg-clip-text text-transparent drop-shadow-2xl`}>
+                    {isBeginnerMode ? 'Great Job!' : 'Amazing!'}
+                  </h1>
+
+                  {/* Decorative line */}
+                  <div className="w-32 h-2 bg-gradient-to-r from-transparent via-emerald-400 to-transparent mx-auto mb-8 rounded-full"></div>
+
+                  {isBeginnerMode ? (
+                    <div className={`text-2xl text-gray-200 mb-8 max-w-3xl mx-auto font-medium leading-relaxed`}>
+                      {finalStats.accuracy >= 95 ? "Perfect accuracy! You're a typing star! 🌟" :
+                       finalStats.accuracy >= 90 ? "Excellent work! Keep up the great accuracy! 💫" :
+                       finalStats.accuracy >= 85 ? "Great job! You're getting really good! 🎯" :
+                       finalStats.accuracy >= 80 ? "Good progress! Keep practicing! 💪" :
+                       finalStats.accuracy >= 70 ? "Nice effort! Focus on accuracy! 📈" :
+                       "Keep trying! You'll get better with practice! 🌱"}
                     </div>
-                    <div className={`text-sm ${theme.textMuted} uppercase tracking-wider font-medium`}>
-                      Time Taken
-                    </div>
-                  </div>
+                  ) : (
+                    <>
+                      <div className={`text-lg text-gray-300 mb-6 font-medium`}>
+                        <span className="inline-flex items-center px-4 py-2 rounded-full bg-gradient-to-r from-indigo-500/30 to-blue-500/30 text-indigo-200 text-sm font-semibold mr-3 border border-indigo-400/30">
+                          {difficulty.charAt(0).toUpperCase() + difficulty.slice(1)}
+                        </span>
+                        <span className="inline-flex items-center px-4 py-2 rounded-full bg-gradient-to-r from-purple-500/30 to-pink-500/30 text-purple-200 text-sm font-semibold border border-purple-400/30">
+                          {mode === 'timed' ? '60s Timer' : 'Practice Mode'}
+                        </span>
+                      </div>
+                      <p className={`text-gray-200 text-2xl leading-relaxed max-w-3xl mx-auto font-medium`}>
+                        {getEncouragingMessage(finalStats.wpm, finalStats.accuracy)}
+                      </p>
+                    </>
+                  )}
                 </div>
               </div>
 
-              {/* Detailed Performance Analysis */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+              {/* Beginner Mode Simple Stats */}
+              {isBeginnerMode ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-10 mb-16 px-8">
+                  {/* Accuracy Card */}
+                  <div className="group relative transform hover:scale-105 transition-all duration-300">
+                    <div className="absolute -inset-2 bg-gradient-to-r from-emerald-400 via-green-500 to-teal-500 rounded-3xl blur-lg opacity-40 group-hover:opacity-60 animate-pulse"></div>
+                    <div className={`relative bg-gray-800/80 backdrop-blur-xl border border-gray-600/50 rounded-3xl p-10 shadow-2xl text-center overflow-hidden`}>
+                      {/* Background pattern */}
+                      <div className="absolute inset-0 opacity-10">
+                        <div className="absolute top-6 right-6 text-8xl">🎯</div>
+                        <div className="absolute bottom-6 left-6 text-6xl">✨</div>
+                      </div>
+
+                      <div className="relative">
+                        <div className="w-24 h-24 bg-gradient-to-br from-emerald-400 to-green-500 rounded-full flex items-center justify-center mx-auto mb-8 shadow-xl">
+                          <span className="text-3xl text-white font-bold">%</span>
+                        </div>
+
+                        <div className="text-8xl font-black text-emerald-400 font-mono mb-6 animate-pulse drop-shadow-lg">
+                          {finalStats.accuracy}
+                        </div>
+
+                        <h3 className={`text-3xl font-bold text-white mb-4 uppercase tracking-wider drop-shadow-lg`}>
+                          Accuracy
+                        </h3>
+
+                        <div className={`text-xl text-gray-200 font-medium leading-relaxed`}>
+                          {finalStats.accuracy >= 95 ? 'Perfect! 🎯' :
+                           finalStats.accuracy >= 90 ? 'Excellent! 🌟' :
+                           finalStats.accuracy >= 80 ? 'Great job! 💪' :
+                           finalStats.accuracy >= 70 ? 'Good start! 📈' :
+                           'Keep practicing! 💪'}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Words Completed Card */}
+                  <div className="group relative transform hover:scale-105 transition-all duration-300">
+                    <div className="absolute -inset-2 bg-gradient-to-r from-blue-400 via-cyan-500 to-indigo-500 rounded-3xl blur-lg opacity-40 group-hover:opacity-60 animate-pulse"></div>
+                    <div className={`relative bg-gray-800/80 backdrop-blur-xl border border-gray-600/50 rounded-3xl p-10 shadow-2xl text-center overflow-hidden`}>
+                      {/* Background pattern */}
+                      <div className="absolute inset-0 opacity-10">
+                        <div className="absolute top-6 right-6 text-8xl">📝</div>
+                        <div className="absolute bottom-6 left-6 text-6xl">📚</div>
+                      </div>
+
+                      <div className="relative">
+                        <div className="w-24 h-24 bg-gradient-to-br from-blue-400 to-cyan-500 rounded-full flex items-center justify-center mx-auto mb-8 shadow-xl">
+                          <span className="text-3xl text-white font-bold">📝</span>
+                        </div>
+
+                        <div className="text-8xl font-black text-blue-400 font-mono mb-6 animate-pulse drop-shadow-lg">
+                          {Math.round(sampleText.split(' ').length)}
+                        </div>
+
+                        <h3 className={`text-3xl font-bold text-white mb-4 uppercase tracking-wider drop-shadow-lg`}>
+                          Words Typed
+                        </h3>
+
+                        <div className={`text-xl text-gray-200 font-medium leading-relaxed`}>
+                          You completed all these words! 📚
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                /* Advanced Mode Full Stats Grid */
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 mb-16 px-8">
+                  {/* WPM Card */}
+                  <div className="group relative transform hover:scale-105 transition-all duration-300">
+                    <div className="absolute -inset-2 bg-gradient-to-r from-purple-400 via-pink-500 to-rose-500 rounded-3xl blur-lg opacity-40 group-hover:opacity-60 animate-pulse"></div>
+                    <div className={`relative bg-gray-800/80 backdrop-blur-xl border border-gray-600/50 rounded-3xl p-8 shadow-2xl text-center overflow-hidden`}>
+                      <div className="absolute inset-0 opacity-10">
+                        <div className="absolute top-4 right-4 text-6xl">⚡</div>
+                      </div>
+                      <div className="relative">
+                        <div className="w-20 h-20 bg-gradient-to-br from-purple-400 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-6 shadow-xl">
+                          <span className="text-2xl text-white font-bold">⚡</span>
+                        </div>
+                        <div className="text-6xl font-black text-purple-400 font-mono mb-4 drop-shadow-lg">
+                          {finalStats.wpm}
+                        </div>
+                        <h4 className={`text-xl font-bold text-white mb-3 uppercase tracking-wider drop-shadow-lg`}>
+                          WPM
+                        </h4>
+                        {finalStats.wpm === userStats.bestWpm && finalStats.wpm > 0 && (
+                          <div className="inline-flex items-center px-3 py-1 rounded-full bg-gradient-to-r from-yellow-500/30 to-orange-500/30 text-yellow-200 text-sm font-semibold border border-yellow-400/30">
+                            🏆 Best!
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Accuracy Card */}
+                  <div className="group relative transform hover:scale-105 transition-all duration-300">
+                    <div className="absolute -inset-2 bg-gradient-to-r from-emerald-400 via-green-500 to-teal-500 rounded-3xl blur-lg opacity-40 group-hover:opacity-60 animate-pulse"></div>
+                    <div className={`relative bg-gray-800/80 backdrop-blur-xl border border-gray-600/50 rounded-3xl p-8 shadow-2xl text-center overflow-hidden`}>
+                      <div className="absolute inset-0 opacity-10">
+                        <div className="absolute top-4 right-4 text-6xl">🎯</div>
+                      </div>
+                      <div className="relative">
+                        <div className="w-20 h-20 bg-gradient-to-br from-emerald-400 to-green-500 rounded-full flex items-center justify-center mx-auto mb-6 shadow-xl">
+                          <span className="text-2xl text-white font-bold">%</span>
+                        </div>
+                        <div className="text-6xl font-black text-emerald-400 font-mono mb-4 drop-shadow-lg">
+                          {finalStats.accuracy}
+                        </div>
+                        <h4 className={`text-xl font-bold text-white mb-3 uppercase tracking-wider drop-shadow-lg`}>
+                          Accuracy
+                        </h4>
+                        {finalStats.accuracy === userStats.bestAccuracy && finalStats.accuracy > 0 && (
+                          <div className="inline-flex items-center px-3 py-1 rounded-full bg-gradient-to-r from-yellow-500/30 to-orange-500/30 text-yellow-200 text-sm font-semibold border border-yellow-400/30">
+                            🏆 Best!
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Words Card */}
+                  <div className="group relative transform hover:scale-105 transition-all duration-300">
+                    <div className="absolute -inset-2 bg-gradient-to-r from-blue-400 via-cyan-500 to-indigo-500 rounded-3xl blur-lg opacity-40 group-hover:opacity-60 animate-pulse"></div>
+                    <div className={`relative bg-gray-800/80 backdrop-blur-xl border border-gray-600/50 rounded-3xl p-8 shadow-2xl text-center overflow-hidden`}>
+                      <div className="absolute inset-0 opacity-10">
+                        <div className="absolute top-4 right-4 text-6xl">📝</div>
+                      </div>
+                      <div className="relative">
+                        <div className="w-20 h-20 bg-gradient-to-br from-blue-400 to-cyan-500 rounded-full flex items-center justify-center mx-auto mb-6 shadow-xl">
+                          <span className="text-2xl text-white font-bold">📝</span>
+                        </div>
+                        <div className="text-6xl font-black text-blue-400 font-mono mb-4 drop-shadow-lg">
+                          {Math.round(sampleText.split(' ').length)}
+                        </div>
+                        <h4 className={`text-xl font-bold text-white mb-3 uppercase tracking-wider drop-shadow-lg`}>
+                          Words
+                        </h4>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Time Card */}
+                  <div className="group relative transform hover:scale-105 transition-all duration-300">
+                    <div className="absolute -inset-2 bg-gradient-to-r from-orange-400 via-red-500 to-pink-500 rounded-3xl blur-lg opacity-40 group-hover:opacity-60 animate-pulse"></div>
+                    <div className={`relative bg-gray-800/80 backdrop-blur-xl border border-gray-600/50 rounded-3xl p-8 shadow-2xl text-center overflow-hidden`}>
+                      <div className="absolute inset-0 opacity-10">
+                        <div className="absolute top-4 right-4 text-6xl">⏱️</div>
+                      </div>
+                      <div className="relative">
+                        <div className="w-20 h-20 bg-gradient-to-br from-orange-400 to-red-500 rounded-full flex items-center justify-center mx-auto mb-6 shadow-xl">
+                          <span className="text-2xl text-white font-bold">⏱️</span>
+                        </div>
+                        <div className="text-6xl font-black text-orange-400 font-mono mb-4 drop-shadow-lg">
+                          {mode === 'timed' ? TIMER_DURATION : Math.round((Date.now() - startTimeRef.current) / 1000)}
+                        </div>
+                        <h4 className={`text-xl font-bold text-white mb-3 uppercase tracking-wider drop-shadow-lg`}>
+                          Seconds
+                        </h4>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Detailed Performance Analysis - Only for Advanced Mode */}
+              {!isBeginnerMode && (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
                 {/* Performance Breakdown */}
                 <div className={`bg-gray-800/40 rounded-2xl p-6 ${theme.cardBorder}`}>
                   <h3 className={`text-xl font-bold ${theme.text} mb-4 flex items-center`}>
@@ -688,33 +916,75 @@ export function TypingTest() {
                   </div>
                 </div>
               </div>
+              )}
 
               {/* Action Buttons */}
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <button
-                  onClick={resetTest}
-                  className="flex-1 py-4 px-8 bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 hover:from-indigo-500 hover:via-purple-500 hover:to-pink-500 text-white font-semibold rounded-2xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:ring-offset-2 focus:ring-offset-gray-900"
-                >
-                  🎯 Try Another Test
-                </button>
+              <div className="flex flex-col gap-8 px-8 pb-8">
+                {isBeginnerMode ? (
+                  <>
+                    <button
+                      onClick={resetTest}
+                      className="group relative w-full py-8 px-12 bg-gradient-to-r from-emerald-500 via-green-600 to-teal-600 hover:from-emerald-400 hover:via-green-500 hover:to-teal-500 text-white font-bold text-3xl rounded-3xl shadow-2xl hover:shadow-3xl transform hover:scale-105 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-emerald-400/50 overflow-hidden"
+                    >
+                      <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                      <div className="relative flex items-center justify-center space-x-4">
+                        <span className="text-4xl">🎯</span>
+                        <span>Practice Again</span>
+                        <span className="text-4xl">🚀</span>
+                      </div>
+                    </button>
 
-                <button
-                  onClick={() => setShowProgress(true)}
-                  className="flex-1 py-4 px-8 bg-gradient-to-r from-blue-600 via-cyan-600 to-teal-600 hover:from-blue-500 hover:via-cyan-500 hover:to-teal-500 text-white font-semibold rounded-2xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-gray-900"
-                >
-                  📊 View Full Progress
-                </button>
+                    <div className="text-center">
+                      <button
+                        onClick={() => setIsBeginnerMode(false)}
+                        className={`inline-flex items-center px-8 py-4 rounded-2xl bg-gray-700/60 border border-gray-600/50 text-lg font-medium transition-all duration-200 hover:bg-gray-600/60 hover:scale-105 text-gray-200 hover:text-white shadow-xl hover:shadow-2xl`}
+                      >
+                        <span>Switch to Advanced Mode</span>
+                        <span className="ml-3 text-xl">⚡</span>
+                      </button>
+                    </div>
+                  </>
+                ) : (
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                    <button
+                      onClick={resetTest}
+                      className="group relative py-6 px-8 bg-gradient-to-r from-indigo-500 via-purple-600 to-pink-600 hover:from-indigo-400 hover:via-purple-500 hover:to-pink-500 text-white font-bold text-xl rounded-3xl shadow-2xl hover:shadow-3xl transform hover:scale-105 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-purple-400/50 overflow-hidden"
+                    >
+                      <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                      <div className="relative flex items-center justify-center space-x-3">
+                        <span className="text-3xl">🎯</span>
+                        <span>New Test</span>
+                      </div>
+                    </button>
 
-                <button
-                  onClick={() => setShowResults(false)}
-                  className={`py-4 px-8 ${theme.inputBg} ${theme.inputBorder} rounded-2xl font-medium transition-all duration-200 hover:bg-gray-700/60`}
-                >
-                  Close Results
-                </button>
+                    <button
+                      onClick={() => setShowProgress(true)}
+                      className="group relative py-6 px-8 bg-gradient-to-r from-blue-500 via-cyan-600 to-teal-600 hover:from-blue-400 hover:via-cyan-500 hover:to-teal-500 text-white font-bold text-xl rounded-3xl shadow-2xl hover:shadow-3xl transform hover:scale-105 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-blue-400/50 overflow-hidden"
+                    >
+                      <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                      <div className="relative flex items-center justify-center space-x-3">
+                        <span className="text-3xl">📊</span>
+                        <span>Progress</span>
+                      </div>
+                    </button>
+
+                    <button
+                      onClick={() => setShowResults(false)}
+                      className={`group relative py-6 px-8 bg-gray-700/60 border border-gray-600/50 rounded-3xl font-bold text-xl transition-all duration-300 hover:bg-gray-600/60 hover:scale-105 shadow-xl hover:shadow-2xl focus:outline-none focus:ring-4 focus:ring-gray-400/50 overflow-hidden text-gray-200 hover:text-white`}
+                    >
+                      <div className="absolute inset-0 bg-gradient-to-r from-gray-600/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                      <div className="relative flex items-center justify-center space-x-3">
+                        <span className="text-3xl">✖️</span>
+                        <span>Close</span>
+                      </div>
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
           </div>
         </div>
+      </div>
       )}
 
       {/* Settings Panel */}
